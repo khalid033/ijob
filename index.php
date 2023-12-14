@@ -1,3 +1,15 @@
+<?php
+session_start();
+$username = $_SESSION['username'];
+
+
+if(!isset($_SESSION['username'])){
+	header('Location: ./login.php');
+}
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,6 +67,7 @@
 							<a class="nav-link" href="#">EN</a>
 						</span>
 						<li class="nav-item">
+							<a class="nav-link" href="logout.php">log out</a>
 							<a class="nav-link" href="login.php">Login</a>
 						</li>
 					</ul>
