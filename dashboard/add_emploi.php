@@ -1,3 +1,49 @@
+<?php
+require("../inc/connection.php");
+
+class OffreCreator {
+    private $conn;
+
+    public function __construct($conn) {
+        $this->conn = $conn;
+    }
+
+    public function createOffre($title, $description, $tags, $status) {
+        $title = mysqli_real_escape_string($this->conn, $title);
+        $description = mysqli_real_escape_string($this->conn, $description);
+        $tags = mysqli_real_escape_string($this->conn, $tags);
+        $status = mysqli_real_escape_string($this->conn, $status);
+
+        $sql = "INSERT INTO offre (title, description, tags, status) VALUES ('$title', '$description', '$tags', '$status')";
+        $result = mysqli_query($this->conn, $sql);
+
+        if ($result) {
+            echo 'Offre created successfully!';
+            header("Location: emploi.php"); // Redirect to emploi.php after successful creation
+            exit();
+        } else {
+            echo 'Error creating offre: ' . mysqli_error($this->conn);
+        }
+    }
+}
+
+$offreCreator = new OffreCreator($conn);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $tags = $_POST['tags'];
+    $status = $_POST['status'];
+
+    $offreCreator->createOffre($title, $description, $tags, $status);
+}
+?>
+
+
+
+
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,12 +61,12 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar" class="side">
+    <aside id="sidebar" class="side">
             <div class="h-100">
                 <div class="sidebar_logo d-flex align-items-end">
-                   
-                    <a href="#" class="nav-link text-white-50">Dashboard</a>
-                  
+                    
+                    <a href="dashboard.php" class="nav-link text-white-50">Dashboard</a>
+                    <img class="close align-self-start" src="img/close.svg" alt="icon">
                 </div>
 
                 <ul class="sidebar_nav">
@@ -37,12 +83,12 @@
                         <a href="contact.php" class="sidebar_link"><img src="img/agent.svg" alt="icon">Contact</a>
                     </li>
                     <li class="sidebar_item">
-                        <a href="#" class="sidebar_link"><img src="img/articles.svg" alt="icon">Articles</a>
+                        <a href="emploi.php" class="sidebar_link"><img src="img/articles.svg" alt="icon">emploi</a>
                     </li>
 
                 </ul>
                 <div class="line"></div>
-                <a href="#" class="sidebar_link"><img src="img/settings.svg" alt="">Settings</a>
+                <a href="#" class="sidebar_link"><img src="img/settings.svg" alt="icon">Settings</a>
 
 
             </div>
@@ -100,7 +146,7 @@
                 </div>
             </nav>
             <div class="container mt-5">
-  <form method="post" action="your_post_handler.php">
+  <form method="post" action="">
     <div class="form-group">
       <label for="title">Title:</label>
       <input type="text" class="form-control" id="title" name="title" required>

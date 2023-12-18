@@ -14,7 +14,7 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar" class="side">
+    <aside id="sidebar" class="side">
             <div class="h-100">
                 <div class="sidebar_logo d-flex align-items-end">
                     
@@ -36,7 +36,7 @@
                         <a href="contact.php" class="sidebar_link"><img src="img/agent.svg" alt="icon">Contact</a>
                     </li>
                     <li class="sidebar_item">
-                        <a href="#" class="sidebar_link"><img src="img/articles.svg" alt="icon">Articles</a>
+                        <a href="emploi.php" class="sidebar_link"><img src="img/articles.svg" alt="icon">emploi</a>
                     </li>
 
                 </ul>

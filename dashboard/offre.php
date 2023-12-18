@@ -14,12 +14,12 @@
 
 <body>
     <div class="wrapper">
-        <aside id="sidebar" class="side">
+    <aside id="sidebar" class="side">
             <div class="h-100">
                 <div class="sidebar_logo d-flex align-items-end">
-                   
-                    <a href="#" class="nav-link text-white-50">Dashboard</a>
-                  
+                    
+                    <a href="dashboard.php" class="nav-link text-white-50">Dashboard</a>
+                    <img class="close align-self-start" src="img/close.svg" alt="icon">
                 </div>
 
                 <ul class="sidebar_nav">
@@ -36,12 +36,12 @@
                         <a href="contact.php" class="sidebar_link"><img src="img/agent.svg" alt="icon">Contact</a>
                     </li>
                     <li class="sidebar_item">
-                        <a href="#" class="sidebar_link"><img src="img/articles.svg" alt="icon">Articles</a>
+                        <a href="emploi.php" class="sidebar_link"><img src="img/articles.svg" alt="icon">emploi</a>
                     </li>
 
                 </ul>
                 <div class="line"></div>
-                <a href="#" class="sidebar_link"><img src="img/settings.svg" alt="">Settings</a>
+                <a href="#" class="sidebar_link"><img src="img/settings.svg" alt="icon">Settings</a>
 
 
             </div>

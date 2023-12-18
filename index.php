@@ -8,6 +8,32 @@ if(!isset($_SESSION['username'])){
 }
 
 ?>
+<script>
+  $(document).ready(function () {
+    $("#live_search").keyup(function () {
+      var input = $(this).val();
+      
+      if (input != "") {
+        $.ajax({
+          url: "livesearch.php",
+          method: "POST",
+          data: { input: input },
+          dataType: 'json', // Expect JSON response
+          success: function (data) {
+            // Update the search result container with the received data
+            $("#searchresult").html(data.join('<br>')).show();
+          },
+          error: function (xhr, status, error) {
+            console.error("AJAX error: " + status, error);
+          }
+        });
+      } else {
+        // Hide the search result container if the input is empty
+        $("#searchresult").css("display", "none");
+      }
+    });
+  });
+</script>
 
 
 <!DOCTYPE html>
@@ -50,7 +76,7 @@ if(!isset($_SESSION['username'])){
 				<div class="collapse navbar-collapse" id="collapsibleNavbar">
 					<ul class="navbar-nav ml-auto">
 						<li class="nav-item active">
-							<a class="nav-link" href="#">Home</a>
+							<a class="nav-link" href="index.php">Home</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Features</a>
@@ -106,7 +132,7 @@ if(!isset($_SESSION['username'])){
 
 			<article class="postcard light green">
 				<a class="postcard__img_link" href="#">
-					<img class="postcard__img" src="https://picsum.photos/300/300" alt="Image Title" />
+					<img class="postcard__img" src="dashboard\France.jpg.webp" alt="Image Title" />
 				</a>
 				<div class="postcard__text t-dark">
 					<h3 class="postcard__title green"><a href="#">Experienced Web Developer in Python .</a></h3>
@@ -121,14 +147,14 @@ if(!isset($_SESSION['username'])){
 						<li class="tag__item"><i class="fas fa-tag mr-2"></i>Maroc</li>
 						<li class="tag__item"><i class="fas fa-clock mr-2"></i>55 mins.</li>
 						<li class="tag__item play green">
-							<a href="#"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
+							<a href="get_job.php"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
 						</li>
 					</ul>
 				</div>
 			</article>
 			<article class="postcard light yellow">
 				<a class="postcard__img_link" href="#">
-					<img class="postcard__img" src="https://picsum.photos/300/300" alt="Image Title" />
+					<img class="postcard__img" src="dashboard\France.jpg.webp" alt="Image Title" />
 				</a>
 				<div class="postcard__text t-dark">
 					<h3 class="postcard__title yellow"><a href="#">Web Designer / Developer</a></h3>
@@ -143,7 +169,7 @@ if(!isset($_SESSION['username'])){
 						<li class="tag__item"><i class="fas fa-tag mr-2"></i>France</li>
 						<li class="tag__item"><i class="fas fa-clock mr-2"></i> 3 mins.</li>
 						<li class="tag__item play yellow">
-							<a href="#"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
+							<a href="get_job.php"><i class="fas fa-play mr-2"></i>APPLY NOW</a>
 						</li>
 					</ul>
 				</div>

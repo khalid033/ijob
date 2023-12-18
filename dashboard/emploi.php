@@ -1,27 +1,26 @@
 <?php
 
-class candidatViewer {
+class OffreViewer {
     private $conn;
 
     public function __construct($conn) {
         $this->conn = $conn;
     }
 
-    public function displaycandidat() {
-        $sql = "SELECT * FROM `candidat`";
+    public function displayOffres() {
+        $sql = "SELECT * FROM `offre`";
         $result = mysqli_query($this->conn, $sql);
 
         while ($row = mysqli_fetch_assoc($result)) {
             echo "<tr>";
             echo "<td>{$row['id']}</td>";
-            echo "<td>{$row['fullname']}</td>";
-            echo "<td>{$row['age']}</td>";
-            echo "<td>{$row['post']}</td>";
-            echo "<td>{$row['skills']}</td>";
-            echo "<td>{$row['motivation']}</td>";
+            echo "<td>{$row['title']}</td>";
+            echo "<td>{$row['description']}</td>";
+            echo "<td>{$row['tags']}</td>";
+            echo "<td>{$row['status']}</td>";
             echo "<td>";
-            echo "<a href='update_candidat.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-pen-to-square fs-5 me-3'></i></a>";
-            echo "<a href='delete_candidat.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-trash fs-5'></i></a>";
+            echo "<a href='update_emploi.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-pen-to-square fs-5 me-3'></i></a>";
+            echo "<a href='delete_emploi.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-trash fs-5'></i></a>";
             echo "</td>";
             echo "</tr>";
         }
@@ -30,9 +29,10 @@ class candidatViewer {
 
 // Example usage:
 require("../inc/connection.php");
-$candidatViewer = new candidatViewer($conn);
+$offreViewer = new OffreViewer($conn);
 
-
+// In your HTML table, call the displayOffres method to show the data
+// (ensure you are inside the HTML context)
 ?>
 
 
@@ -151,23 +151,22 @@ $candidatViewer = new candidatViewer($conn);
 
 </nav>
     
+<a href="add_emploi.php" class="btn btn-dark mb-3">Add New Emploi</a>
 
 
     <table class="table table-hover text-center">
   <thead class="table-dark">
     <tr>
       <th scope="col">id</th>
-      <th scope="col">fullname</th>
-      <th scope="col">age</th>
-      <th scope="col">post</th>
-      <th scope="col">skills</th>
-      <th scope="col">motivation</th>
-      <th scope="col">Actions</th>
-
+      <th scope="col">title</th>
+      <th scope="col">description</th>
+      <th scope="col">tags</th>
+      <th scope="col">status</th>
+      <th scope="col">actions</th>
     </tr>
   </thead>
   <tbody>
-  <?php $candidatViewer->displaycandidat(); ?>
+  <?php $offreViewer->displayOffres(); ?>
   </tbody>
 </table>
 </div>

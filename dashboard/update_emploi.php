@@ -1,41 +1,79 @@
 <?php
+require("../inc/connection.php");
 
-class candidatViewer {
+class OffreUpdater {
     private $conn;
 
     public function __construct($conn) {
         $this->conn = $conn;
     }
 
-    public function displaycandidat() {
-        $sql = "SELECT * FROM `candidat`";
+    public function updateOffre($id, $title, $description, $tags, $status) {
+        $title = mysqli_real_escape_string($this->conn, $title);
+        $description = mysqli_real_escape_string($this->conn, $description);
+        $tags = mysqli_real_escape_string($this->conn, $tags);
+        $status = mysqli_real_escape_string($this->conn, $status);
+
+        $sql = "UPDATE offre SET title='$title', description='$description', tags='$tags', status='$status' WHERE id=$id";
         $result = mysqli_query($this->conn, $sql);
 
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo "<tr>";
-            echo "<td>{$row['id']}</td>";
-            echo "<td>{$row['fullname']}</td>";
-            echo "<td>{$row['age']}</td>";
-            echo "<td>{$row['post']}</td>";
-            echo "<td>{$row['skills']}</td>";
-            echo "<td>{$row['motivation']}</td>";
-            echo "<td>";
-            echo "<a href='update_candidat.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-pen-to-square fs-5 me-3'></i></a>";
-            echo "<a href='delete_candidat.php?id={$row['id']}' class='link-dark'><i class='fa-solid fa-trash fs-5'></i></a>";
-            echo "</td>";
-            echo "</tr>";
+        if ($result) {
+            echo 'Offre updated successfully!';
+            header("Location: emploi.php"); // Redirect to emploi.php after successful update
+            exit();
+        } else {
+            echo 'Error updating offre: ' . mysqli_error($this->conn);
+        }
+    }
+
+    public function getOffreById($id) {
+        $id = mysqli_real_escape_string($this->conn, $id);
+
+        $sql = "SELECT * FROM offre WHERE id=$id";
+        $result = mysqli_query($this->conn, $sql);
+
+        if ($result) {
+            return mysqli_fetch_assoc($result);
+        } else {
+            echo 'Error retrieving offre: ' . mysqli_error($this->conn);
+            return null;
         }
     }
 }
 
-// Example usage:
-require("../inc/connection.php");
-$candidatViewer = new candidatViewer($conn);
+$offreUpdater = new OffreUpdater($conn);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $id = $_POST['id']; // Assuming you have an input field for the offre ID
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $tags = $_POST['tags'];
+    $status = $_POST['status'];
 
+    $offreUpdater->updateOffre($id, $title, $description, $tags, $status);
+}
+
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $existingOffre = $offreUpdater->getOffreById($id);
+}
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </head>
 
+<body>
+    
 <!DOCTYPE html>
 <html lang="en">
 
@@ -48,20 +86,9 @@ $candidatViewer = new candidatViewer($conn);
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
     </head>
 
 <body>
-<?php
-    if(isset($_GET['msg'])){
-        $msg = $_GET['msg'];
-        echo '<div class="alert alert-warning alert-dismissible fade show" role="alert">
-        '.$msg.'
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>';
-    }
-?>
     <div class="wrapper">
     <aside id="sidebar" class="side">
             <div class="h-100">
@@ -147,50 +174,43 @@ $candidatViewer = new candidatViewer($conn);
                     </ul>
                 </div>
             </nav>
-            <section class="Agents px-4">
+            <div class="container mt-5">
+        <form method="post" action="">
+        
+            <input type="hidden" name="id" value="<?php echo $existingOffre['id']; ?>">
 
-</nav>
-    
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" class="form-control" id="title" name="title" value="<?php echo $existingOffre['title']; ?>" required>
+            </div>
 
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required><?php echo $existingOffre['description']; ?></textarea>
+            </div>
 
-    <table class="table table-hover text-center">
-  <thead class="table-dark">
-    <tr>
-      <th scope="col">id</th>
-      <th scope="col">fullname</th>
-      <th scope="col">age</th>
-      <th scope="col">post</th>
-      <th scope="col">skills</th>
-      <th scope="col">motivation</th>
-      <th scope="col">Actions</th>
+            <div class="form-group">
+                <label for="tags">Tags:</label>
+                <input type="text" class="form-control" id="tags" name="tags" value="<?php echo $existingOffre['tags']; ?>">
+            </div>
 
-    </tr>
-  </thead>
-  <tbody>
-  <?php $candidatViewer->displaycandidat(); ?>
-  </tbody>
-</table>
-</div>
+            <div class="form-group">
+                <label for="status">Status:</label>
+                <select class="form-control" id="status" name="status">
+                    <option value="Actif" <?php echo ($existingOffre['status'] == 'Actif') ? 'selected' : ''; ?>>Actif</option>
+                    <option value="Inactif" <?php echo ($existingOffre['status'] == 'Inactif') ? 'selected' : ''; ?>>Inactif</option>
+                </select>
+            </div>
 
+            <button type="submit" class="btn btn-primary mt-3">Update</button>
+        </form>
+    </div>
 
-
-
-
-
-
-<!-- bootstrap link -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-
-
-
-
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 
-
-
-</body>
-
-            </section>
             
         </div>
     </div>
@@ -198,6 +218,9 @@ $candidatViewer = new candidatViewer($conn);
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
     <script src="dashboard.js"></script>
+</body>
+
+</html>
 </body>
 
 </html>
