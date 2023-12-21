@@ -1,5 +1,5 @@
 {
-    "name": "youcode/jobeasy_mvc",
+    "name": "youcode/jobease-php-oop-mvc",
     "autoload": {
         "psr-4": {
             "App\\": "app/"
@@ -7,11 +7,10 @@
     },
     "authors": [
         {
-            "name": "Amine Formateur",
-            "email": "amine.devinfo@gmail.com"
+            "name": "latifa"
         }
     ],
-    "require-dev": {
-        "symfony/var-dumper": "^6.4"
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
     }
 }

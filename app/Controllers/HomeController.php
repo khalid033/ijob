@@ -1,35 +1,23 @@
 <?php
+
 namespace App\Controllers;
-use App\Models\UserModel;
+use App\Models\JobModel; 
 
-class HomeController
-{
-    public function index()
-    {
-        $userModel = new UserModel();
-    
-        // Fetch data from the "users" table
+class HomeController {
+    public $conn;
 
-        $users = $userModel->getAllUsers();
-        // Your controller logic goes here
-        $data = 'Hello, this is the home page!';
-        $collections = ['users' => $users , "data" => $data] ;
-        require(__DIR__ .'../../../view/home.php');
-      
-
+    public function __construct($conn) {
+        $this->conn = $conn;
     }
-    public function fetchMoreUsers()
-    {
-       
-        $moreUsers = [
-            ['username' => 'test user A', 'email' => 'user1@example.com'],
-            ['username' => 'test user B', 'email' => 'user2@example.com'],
-        ];
 
-        // Return the data as JSON
-        header('Content-Type: application/json');
-        echo json_encode(['users' => $moreUsers]);
-        exit;
+    public function index() {
+        if (isset($_GET) or isset($_POST)) {
+            $searchTerm = isset($_POST['title']) ? $_POST['title'] : (isset($_POST['company']) ? $_POST['company'] : (isset($_POST['location']) ? $_POST['location'] : NULL));
+
+            $offreQuery = new jobModel($this->conn);
+            $allOffres = $offreQuery->search($searchTerm);
+        }
+
+        require(__DIR__ .'../../../view/home.php');
     }
 }
-?>
