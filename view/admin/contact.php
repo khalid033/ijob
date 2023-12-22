@@ -45,7 +45,7 @@ if ($_SESSION['role'] !== 'admin') {
                         <a href="contact.php" class="sidebar_link"><img src="img/agent.svg" alt="icon">Contact</a>
                     </li>
                     <li class="sidebar_item">
-                        <a href="offre/index.php" class="sidebar_link"><img src="img/articles.svg" alt="icon">Articles</a>
+                        <a href="offre/index.php" class="sidebar_link"><img src="img/articles.svg" alt="icon">Jobs-offer</a>
                     </li>
 
                 </ul>
